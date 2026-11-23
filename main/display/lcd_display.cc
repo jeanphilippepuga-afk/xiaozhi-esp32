@@ -32,31 +32,32 @@ void LcdDisplay::InitializeLcdThemes() {
     auto emoji_font = std::make_shared<LvglBuiltInFont>(&font_noto_emoji_30_4);
 
     // light theme
+   // light theme (forcé en HUD noir et vert fluo)
     auto light_theme = new LvglTheme("light");
-    light_theme->set_background_color(lv_color_hex(0xFFFFFF));
-    light_theme->set_text_color(lv_color_hex(0x000000));
-    light_theme->set_chat_background_color(lv_color_hex(0xE0E0E0));
-    light_theme->set_user_bubble_color(lv_color_hex(0x00FF00));
-    light_theme->set_assistant_bubble_color(lv_color_hex(0xDDDDDD));
-    light_theme->set_system_bubble_color(lv_color_hex(0xFFFFFF));
-    light_theme->set_system_text_color(lv_color_hex(0x000000));
+    light_theme->set_background_color(lv_color_hex(0x000000));
+    light_theme->set_text_color(lv_color_hex(0x39FF14));
+    light_theme->set_chat_background_color(lv_color_hex(0x000000));
+    light_theme->set_user_bubble_color(lv_color_hex(0x000000));
+    light_theme->set_assistant_bubble_color(lv_color_hex(0x000000));
+    light_theme->set_system_bubble_color(lv_color_hex(0x000000));
+    light_theme->set_system_text_color(lv_color_hex(0x39FF14));
     light_theme->set_border_color(lv_color_hex(0x000000));
-    light_theme->set_low_battery_color(lv_color_hex(0x000000));
+    light_theme->set_low_battery_color(lv_color_hex(0xFF0000));
     light_theme->set_text_font(text_font);
     light_theme->set_icon_font(icon_font);
     light_theme->set_large_icon_font(large_icon_font);
     light_theme->set_emoji_font(emoji_font);
 
-    // dark theme
+    // dark theme (HUD noir et vert fluo)
     auto dark_theme = new LvglTheme("dark");
     dark_theme->set_background_color(lv_color_hex(0x000000));
-    dark_theme->set_text_color(lv_color_hex(0xFFFFFF));
-    dark_theme->set_chat_background_color(lv_color_hex(0x1F1F1F));
-    dark_theme->set_user_bubble_color(lv_color_hex(0x00FF00));
-    dark_theme->set_assistant_bubble_color(lv_color_hex(0x222222));
+    dark_theme->set_text_color(lv_color_hex(0x39FF14));
+    dark_theme->set_chat_background_color(lv_color_hex(0x000000));
+    dark_theme->set_user_bubble_color(lv_color_hex(0x000000));
+    dark_theme->set_assistant_bubble_color(lv_color_hex(0x000000));
     dark_theme->set_system_bubble_color(lv_color_hex(0x000000));
-    dark_theme->set_system_text_color(lv_color_hex(0xFFFFFF));
-    dark_theme->set_border_color(lv_color_hex(0xFFFFFF));
+    dark_theme->set_system_text_color(lv_color_hex(0x39FF14));
+    dark_theme->set_border_color(lv_color_hex(0x000000));
     dark_theme->set_low_battery_color(lv_color_hex(0xFF0000));
     dark_theme->set_text_font(text_font);
     dark_theme->set_icon_font(icon_font);
@@ -73,6 +74,13 @@ LcdDisplay::LcdDisplay(esp_lcd_panel_io_handle_t panel_io, esp_lcd_panel_handle_
     : panel_io_(panel_io), panel_(panel) {
     width_ = width;
     height_ = height;
+
+    // Initialize LCD themes
+    InitializeLcdThemes();
+
+    // Load theme from settings
+    Settings settings("display", false);
+    std::string theme_name = settings.GetString("theme", "dark");
 
     // Initialize LCD themes
     InitializeLcdThemes();
