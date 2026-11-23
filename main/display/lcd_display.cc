@@ -79,13 +79,6 @@ LcdDisplay::LcdDisplay(esp_lcd_panel_io_handle_t panel_io, esp_lcd_panel_handle_
     InitializeLcdThemes();
 
     // Load theme from settings
-
-    std::string theme_name = settings.GetString("theme", "dark");
-
-    // Initialize LCD themes
-    InitializeLcdThemes();
-
-    // Load theme from settings
     Settings settings("display", false);
     std::string theme_name = settings.GetString("theme", "dark");
     current_theme_ = LvglThemeManager::GetInstance().GetTheme(theme_name);
