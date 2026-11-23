@@ -1052,7 +1052,7 @@ void Application::HandleStateChangedEvent() {
                 display->SetStatus(Lang::Strings::STANDBY);
                 display->ClearChatMessages();  // Clear messages first
                 display->SetEmotion(
-                    "neutral");  // Then set emotion (wechat mode checks child count)
+                    "sleepy");  // Then set emotion (wechat mode checks child count)
             }
             audio_service_.EnableVoiceProcessing(false);
             audio_service_.EnableWakeWordDetection(true);
