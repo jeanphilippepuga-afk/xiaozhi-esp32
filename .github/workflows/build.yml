@@ -11,7 +11,7 @@ permissions:
 
 jobs:
   build:
-    name: Build spotpear-esp32-s3-1.28-box
+    name: Build spotpear-sp-esp32-s3-1.28-box
     runs-on: ubuntu-latest
     container:
       image: espressif/idf:release-v6.1
@@ -19,15 +19,15 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v7
 
-      - name: Build spotpear-esp32-s3-1.28-box
+      - name: Build spotpear-sp-esp32-s3-1.28-box
         shell: bash
         run: |
           source "$IDF_PATH/export.sh"
-          python scripts/build.py spotpear-esp32-s3-1.28-box
+          python scripts/build.py spotpear/sp-esp32-s3-1.28-box
 
       - name: Upload artifacts
         uses: actions/upload-artifact@v7
         with:
-          name: spotpear-esp32-s3-1.28-box
+          name: spotpear-sp-esp32-s3-1.28-box
           path: build/merged-binary.bin
           if-no-files-found: error
