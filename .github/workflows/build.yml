@@ -11,7 +11,7 @@ permissions:
 
 jobs:
   build:
-    name: Build spotpear-sp-esp32-s3-1.28-box
+    name: Build spotpear-esp32-s3-1.28-box
     runs-on: ubuntu-latest
     container:
       image: espressif/idf:release-v6.1
@@ -19,15 +19,22 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v7
 
-      - name: Build spotpear-sp-esp32-s3-1.28-box
+      - name: Build firmware
         shell: bash
         run: |
           source "$IDF_PATH/export.sh"
-          python scripts/build.py spotpear/sp-esp32-s3-1.28-box
+          idf.py set-target esp32s3
+          echo "CONFIG_BOARD_TYPE_SPOTPEAR_ESP32_S3_1_28_BOX=y" >> sdkconfig.defaults
+          cat main/boards/spotpear/sp-esp32-s3-1.28-box/config.json
+          idf.py reconfigure
+          idf.py build
+          esptool.py --chip esp32s3 merge_bin -o build/merged-binary.bin --flash_mode dio --flash_size 16MB 0x0 build/bootloader/bootloader.bin 0x8000 build/partition_table/partition-table.bin 0x10000 build/ota_data_initial.bin 0x20000 build/xiaozhi.bin
 
       - name: Upload artifacts
         uses: actions/upload-artifact@v7
         with:
           name: spotpear-sp-esp32-s3-1.28-box
-          path: build/merged-binary.bin
+          path: |
+            build/xiaozhi.bin
+            build/merged-binary.bin
           if-no-files-found: error
